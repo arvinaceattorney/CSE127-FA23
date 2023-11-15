@@ -10,13 +10,13 @@
 ## Cross-Site Request Forgery (CSRF)
 - When a user’s browser issues an HTTP GET request, it attaches all cookies associated with the target site
 
-![Alt text](image-13.png)
+![Alt text](./WebAttack/image-13.png)
 
 - Only the target site sees the cookies, but...
     - It has no way of knowing if the request was authorized by the user
 
 ## Typical Authentication Cookies
-![Alt text](image-14.png)
+![Alt text](./WebAttack/image-14.png)
 
 ## CSRF Scenario
 - User is signed into bank.com
@@ -34,8 +34,8 @@
     - Bad news! All your money is gone
 - Cookie authentication is not sufficient when side effects can happen
 
-![Alt text](image-15.png)
-![Alt text](image-16.png)
+![Alt text](./WebAttack/image-15.png)
+![Alt text](./WebAttack/image-16.png)
 
 ### Note - CSRF isn't just about cookies and authentication
 - An issue any place where the user's browser as some kind of privileged access via the web
@@ -48,7 +48,7 @@
 # CSRF Defenses
 
 ## Secret Validation Token
-![Alt text](image-17.png)
+![Alt text](./WebAttack/image-17.png)
 - Static token provides no protection (attacker can simply lookup)
 - Typically session-dependent identifier or token
 - Attacker cannot retrieve token via GET because of Same Origin Policy
@@ -66,7 +66,7 @@ blocks it in CSRF-prone request methods (e.g. POST).
 
 
 
-![Alt text](image-18.png)
+![Alt text](./WebAttack/image-18.png)
 
 ### But...
 - Implicitly assumes the GETs have no side effects
@@ -101,10 +101,10 @@ the attacker cannot see the response to the forged request.
 
 
 # Command Injection
-![Alt text](image-19.png)
+![Alt text](./WebAttack/image-19.png)
 
 ## Trivial Example
-![Alt text](image-20.png)
+![Alt text](./WebAttack/image-20.png)
 
 ```c
 int main(int argc, char **argv) {
@@ -115,28 +115,28 @@ int main(int argc, char **argv) {
 }
 ```
 
-![Alt text](image-21.png)
-![Alt text](image-22.png)
+![Alt text](./WebAttack/image-21.png)
+![Alt text](./WebAttack/image-22.png)
 - Deletes all home directories
 
 ### __Never expose an interpreter to external input__
 
 ## Other Domains: Python
-![Alt text](image-23.png)
+![Alt text](./WebAttack/image-23.png)
 
 ## Similar Code Injection Problems with eval()
-![Alt text](image-24.png)
+![Alt text](./WebAttack/image-24.png)
 - Sanitizing input by making sure we're interpreting it as an integer
 
 ## Also on Web Servers... CGI
-![Alt text](image-25.png)
+![Alt text](./WebAttack/image-25.png)
 
 ## Command Injection Prevention
 - Reasonably effective blacklists (from OWASP)
 - Those are pretty good, but you’d be better off not blacklisting
 - Instead, consider whitelisting only what you actually need to allow
 
-![Alt text](image-26.png)
+![Alt text](./WebAttack/image-26.png)
 
 ## SQL Injection (SQLi)
 - Last examples all focused on shell injection
@@ -144,7 +144,7 @@ int main(int argc, char **argv) {
 - These can also have command injection vulnerabilities when web site developers build SQL queries using __user-provided data__
 
 ### SQL Basics
-![Alt text](image-27.png)
+![Alt text](./WebAttack/image-27.png)
 
 ### Insecure Login Checking
 ```php
@@ -155,12 +155,12 @@ if $rs.count > 0 {
 // success
 }
 ```
-![Alt text](image-28.png)
-![Alt text](image-29.png)
+![Alt text](./WebAttack/image-28.png)
+![Alt text](./WebAttack/image-29.png)
 
 ## Building an Attack
-![Alt text](image-30.png)
-![Alt text](image-31.png)
+![Alt text](./WebAttack/image-30.png)
+![Alt text](./WebAttack/image-31.png)
 
 - `'; drop table users --`
     - Delete the user table from the database
@@ -211,10 +211,10 @@ thanos, with password = infinitypw
     - ORMs (Object Relational Mappers)
 
 ## Prepared SQL
-![Alt text](image-32.png)
+![Alt text](./WebAttack/image-32.png)
 
 ## ORMs
-![Alt text](image-33.png)
+![Alt text](./WebAttack/image-33.png)
 
 ## Injection Summary
 - Onjection attacks occur when un-sanitized user input ends up as code (shell command, argument to eval, or SQL statement)
@@ -225,20 +225,20 @@ thanos, with password = infinitypw
 # Cross Site Scripting (XSS)
 Attack occurs when application takes untrusted data and sends it to a web browser without proper validation or sanitization.
 
-![Alt text](image-34.png)
+![Alt text](./WebAttack/image-34.png)
 
 - Key Idea: Indirect attack on browser via server
 - Malicious content is injected via URL encoding (query parameters, form submission) and reflected back by the server in the response
 - Browser then executes code that server provided
 
 ### Usual Search Example
-![Alt text](image-35.png)
+![Alt text](./WebAttack/image-35.png)
 
 ### Simple Malicious Search Example
-![Alt text](image-36.png)
+![Alt text](./WebAttack/image-36.png)
 
 ### More Complex Examples
-![Alt text](image-37.png)
+![Alt text](./WebAttack/image-37.png)
 
 ## Types of XSS
 An XSS vulnerability is present when an attacker can inject scripting code
@@ -249,5 +249,5 @@ page from the victim site.
 by the web application, such as a database.
 
 ### Another Example
-![Alt text](image-38.png)
-![Alt text](image-39.png)
+![Alt text](./WebAttack/image-38.png)
+![Alt text](./WebAttack/image-39.png)

