@@ -251,3 +251,75 @@ by the web application, such as a database.
 ### Another Example
 ![Alt text](./WebAttack/image-38.png)
 ![Alt text](./WebAttack/image-39.png)
+
+### Another Exmaple
+- Attacker, evil.com, identifies Web site that will reflect content
+    - E.g., naïve.com
+```js
+GET/ hello.cgi?name=Bob
+hello.cgi responds with
+<html>Welcome, Bob</html>
+```
+- And also has private cookies with potential victims
+- Then convinces victim to click on a link to evil.com
+    - Which fetches content from naïve.com with arguments that include code
+    - Victim runs code with full access to same-origin at naïve.com
+
+![Alt text](image.png)
+
+## Samy Worm
+-  MySpace: largest social networking site in the world way back when
+(2004-2010)
+- Users can post HTML on their MySpace pages
+- MySpace was sanitizing user input to prevent inclusion of JavaScript
+    - But missed (at least one): javascript inside CSS tags
+```js
+<div style=“background:url(‘javascript:alert(1)’)”>
+```
+- Samy Kamkar used this on his MySpace page (2005)
+
+## Preventing XSS: Filtering
+- Key problem: rendering raw HTML from user input
+- Preventing injection of scripts into HTML is hard
+    - Blocking < and > is not enough
+    - Event handlers
+    - Beware of filter evasion tricks
+    - Scripts can also be embedded directly in tags
+- Filtering is really hard to do right... don't try to do it yourself
+
+### Example
+- Filter action: filter out "<script"
+- <scr<scriptipt src="..."
+    - <"script" src="..." 
+
+## Content Security Policy
+- CSP allows for server administrators to eliminate XSS attacks by specifying the domains that the browser should consider to be valid sources of executable scripts.
+- Browser will only execute scripts loaded in source files received from whitelisted domains, ignoring all other scripts (including inline scripts and event-handling HTML attributes).
+    - All browsers today follow CSP
+
+### CSP Example 1
+- Content can only be loaded from same domain; no inline scripts
+- CSP: default-src 'self'
+
+### CSP Example 2
+- Allow
+    - Include images from any origin
+    - Restrict audio or video media to trusted providers
+    - Only allow scripts from a specific server that hosts trusted code; no inline scripts
+    - CSP: Content-Security-Policy: default-src 'self'; img-src *; media-src media1.com; script-src userscripts.example.com
+
+## Another Use for CSP: Clickjacking
+- Idea: overlay transparent iframe (CSS Opacity Settings) over page that convinces user to click
+    - Attract user to malicious attack site
+- You don't want to let anyone load your page in an iframe
+    - CSP to the rescue!
+
+## Insecure Direct Object Reference (IDOR)
+- ```https://citi.com/myacct/9725126314/summary```
+    - Do you see anythiing concerning with this URL?
+- Parameter Tampering
+    - This is one of the most conceptually simple issues, but is still very prevalent
+
+### Another Example
+![Alt text](image-1.png)
+
