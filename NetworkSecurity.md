@@ -115,7 +115,8 @@
 Three-way Handshake
 ![Alt text](image-17.png)
 
-## TCP/IP Security (1970s)
+# TCP/IP Security 
+### 1970s
 - Original TCP/IP Design: Trusted Network and Hosts
     - Administered by mutually trusted parties
 - End-to-end priniciple
@@ -129,7 +130,7 @@ technical errors where the meaning is still clear).”
     - Network protocols used only as intended
     - Hosts controlled by trusted administrators
 
-## TCP/IP Security (1980s)
+### 1980s
 - 1980s Threat Model
     - Can't trust the hosts
         - Compromised hosts
@@ -137,7 +138,7 @@ technical errors where the meaning is still clear).”
         - Anyone can connect to public internet
     - But network is still trusted
 
-## TCP/IP Security (Today)
+### Today
 - Can't trust the network either
     - Network equipment can be compromised
     - Untrusted network operators
@@ -246,3 +247,54 @@ Used to query hosts on local network to get link-layer address for an IP address
 
 ![Alt text](image-22.png)
 
+## IP Spoofing Attacks
+- There is no authentication in Link or Internet Layers
+- Even if Routing is correct, Eve can still spoof Alice's IP address
+- UDP: trivial
+    - Stateless protocol, each datagram is independent of others
+- TCP: more complicated, but still possible
+    - Two endpoints maintain a shared state
+    - Attacker must be able to guess it
+
+## TCP Connection Spoofing
+- Eve needs to complete the TCP three-way handshake between "Alice" and Bob
+- Eve can't see traffic between Alice and Bob
+- Eve needs to guess initial sequence number Y in order to correctly ACK Bob's SYN
+
+### Recall: Three-Way Handshake
+![Alt text](image-23.png)
+
+### Eve's Three-Way Handshake Problem
+![Alt text](image-24.png)
+
+- The sequence number field is 32 bits
+- Early implementations just incremented a global counter used to initialize sequence numbers (ISN) for TCP connections
+- Later pseudo-random number generators were used
+    - Still global, weaknesses in PRNGs allowed guessing
+    - We now use cryptographically strong random number generators for picking initial sequence numbers
+
+## Example Denial-of-Service (DoS) Vulnerability with TCP Spoofing
+- Suppose attacker can guess seq. number for an existing
+connection:
+    - Attacker can send Reset (RST) packet to close connection. Results in DoS.
+    - Naively, success prob. is 1/232 per guess (32-bit seq. #’s).
+    - But most systems allow for a large window of acceptable seq. #’s corresponding to number of outstanding packets in flight (e.g., if you have 100MB in flight)
+        - Achievable success probability.
+- Attack is most effective against long lived connections
+(expensive to set up again; BGP)
+
+### Related Issue: Blind Port Scanning
+![Alt text](image-25.png)
+- Context: attackers would like to know what TCP services are offered on a particular host (so it knows how to attack them)
+- Port Scan:
+    - Send TCP SYN to each port number on the host
+    - See if you get a SYN/ACK back (there is a service at that port number) or a RST (there is nothing there)
+- Problem
+    - You expose your source addres when doing this
+    - Attackers would like to be able to do it anonymously...
+- Key Trick: Exploiting IP identification field in the IP header
+    - Recall the IP identification field was used for fragmentation
+    - Hosts need to ensure that it is unique across packets have outstanding
+    - A super easy way to do this is to use a glogal counter on the host (increment after you send each packet)
+        - If host A sends a pkt with id=5, then next pkt will have id=6, followed by id=7, etc
+        - So if you receive a pkt from host A at time t1 with id =10, and another packet at time t2 with id=12, you can infer… that host A sent another packet somewhere between t1 and t2
