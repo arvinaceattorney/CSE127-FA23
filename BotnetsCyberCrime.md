@@ -125,3 +125,14 @@
 ## Largest Botnet Application: Spam
 
 ![Alt text](image-70.png)
+
+## Final Logistics
+- What would be easy to write questions on?
+
+## Affiliate Program Structure
+- Division of Labor
+    - Affiliates
+
+
+![Alt text](image-71.png)
+
